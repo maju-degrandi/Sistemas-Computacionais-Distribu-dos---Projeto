@@ -1,0 +1,35 @@
+
+.table-container table {
+	border: 2px solid forestgreen;
+    color:gainsboro;
+    overflow-y: auto; 
+    max-height: 100px; 
+}
+  
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+tr{
+    transition: background-color 0.5s ease;
+    font-size: 1.5vw;
+}
+
+tr:hover {
+    background-color: #343943; 
+}
+
+th {
+	border-bottom: 1px solid black;
+}
+
+td {
+	text-align: center;
+    width: 300px;
+}
+
+.title-row{
+    background-color:dimgrey;
+    height: 50px;
+}
