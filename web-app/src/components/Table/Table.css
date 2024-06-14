@@ -9,11 +9,12 @@
 .table-container table {
     width: 100%;
     border-collapse: collapse;
-}
+} 
 
 tr{
     transition: background-color 0.5s ease;
     font-size: 1.5vw;
+    
 }
 
 tr:hover {
@@ -27,11 +28,13 @@ th {
 .sell-column{
     width: 230px;
     display: flex;
+    align-items: center;
+    height: 9vh;
 }
 
 .data-column{
 	text-align: center;
-    width: 300px;
+    width: 200px;
 }
 
 .title-row{

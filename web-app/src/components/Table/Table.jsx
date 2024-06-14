@@ -11,6 +11,7 @@ export default function Table({data}) {
                 <td>Substância</td>
                 <td>Produto</td>
                 <td>Laboratório</td>
+                <td>Qtd. em Estoque</td>
                 <td></td>
             </tr>
             {data.map((val, key) => {
@@ -19,7 +20,8 @@ export default function Table({data}) {
                         <td className='data-column'>{val.substance}</td>
                         <td className='data-column'>{val.product}</td>
                         <td className='data-column'>{val.lab}</td>
-                        <td className='sell-column'><QuantitySelector num={val.numStock}/> <SellButton/></td>
+                        <td className='data-column'>{val.numStock}</td>
+                        <td className='sell-column'><QuantitySelector initialNumSell={0} numStock={val.numStock}/> <SellButton/></td>
                     </tr>
                 )
             })}

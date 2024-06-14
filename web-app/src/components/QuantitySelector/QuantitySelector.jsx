@@ -1,14 +1,32 @@
-import React from 'react'
-import { FaPlus } from "react-icons/fa";
-import { FaMinus } from "react-icons/fa";
+import React, { useState } from 'react';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 import './QuantitySelector.css';
 
-export default function QuantitySelector({num}) {
-  return (
-    <div className='quantity-box'>
-        <button className='symbol-button'> <FaPlus /> </button>
-        <p className='quantity-num'>{num}</p>
-        <button className='symbol-button'> <FaMinus /> </button>
-    </div>
-  )
+
+export default function QuantitySelector({ initialNumSell, numStock }) {
+    const [numSell, setNumSell] = useState(initialNumSell);
+
+    const handleClickPlus = () => {
+        if (numSell < numStock) {
+            setNumSell(numSell + 1);
+        }
+    };
+
+    const handleClickMinus = () => {
+        if (numSell > 0) {
+            setNumSell(numSell - 1);
+        }
+    };
+
+    return (
+        <div className='quantity-box'>
+            <button className='symbol-button' onClick={handleClickMinus}>
+                <FaMinus />
+            </button>
+            <p className='quantity-num'>{numSell}</p>
+            <button className='symbol-button' onClick={handleClickPlus}>
+                <FaPlus />
+            </button>
+        </div>
+    );
 }
