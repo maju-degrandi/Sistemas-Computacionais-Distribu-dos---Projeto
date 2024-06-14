@@ -1,0 +1,14 @@
+.sell-button{
+    background-color: forestgreen;
+    padding: 5px 25px;
+    margin: 5px;
+    border-radius: 20px;
+    border:none;
+    color: white;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.sell-button:hover{
+    background-color: dimgray;
+}

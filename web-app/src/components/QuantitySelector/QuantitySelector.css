@@ -1,0 +1,23 @@
+ .quantity-box{
+    display: flex;
+    align-items: center;
+    border: 0.1vw solid dimgray;
+    border-radius: 10px;
+    margin: 5px 10px;
+ }
+
+ .symbol-button{
+    background-color: #282c3400;
+    border-radius: 20px;
+    width: 2.3vw;
+    height: 2.3vw;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+ }
+
+ .quantity-num{
+    margin: 0px 10px 0px 10px;
+    font-size: 1vw;
+    width: 2vw;
+ }

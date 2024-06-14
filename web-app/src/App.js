@@ -5,18 +5,18 @@ import './App.css';
 
 function App() {
   const dataList = [
-    { substance: "Cloridrato de Metilfenidato", product: "Ritalina", lab: "Eurofarma" },
-    { substance: "Amoxilina", product: "Amoxilina", lab: "Medley" },
-    { substance: "Cloridrato de Sertralina", product: "Zoloft", lab: "EMS" },
-    { substance: "Acebrofilina", product: "Filinar G", lab: "Bayer" },
-    { substance: "Acetato de Abiraterona", product: "Acetato de Abiraterona", lab: "Teva Farmacêutica" },
-    { substance: "Albendazol", product: "Monozol", lab: "Sanofi" },
-    { substance: "Brexpiprazol", product: "Rexulti", lab: "Lundbeck Brasil" },
-    { substance: "Cabergolina", product: "Caberedux", lab: "EMS" },
-    { substance: "Dipirona", product: "Maxalgina", lab: "EMS" },
-    { substance: "Dipirona", product: "Dipirona Monoidratada", lab: "Geolab" },
-    { substance: "Dipirona", product: "Diprin", lab: "Geolab" },
-    { substance: "Docetaxel", product: "Dobeven", lab: "Sanofi" },
+    { substance: "Cloridrato de Metilfenidato", product: "Ritalina", lab: "Eurofarma", numStock: 11},
+    { substance: "Amoxilina", product: "Amoxilina", lab: "Medley", numStock: 41 },
+    { substance: "Cloridrato de Sertralina", product: "Zoloft", lab: "EMS", numStock: 17 },
+    { substance: "Acebrofilina", product: "Filinar G", lab: "Bayer", numStock: 9 },
+    { substance: "Acetato de Abiraterona", product: "Acetato de Abiraterona", lab: "Teva Farmacêutica", numStock: 0 },
+    { substance: "Albendazol", product: "Monozol", lab: "Sanofi", numStock: 7 },
+    { substance: "Brexpiprazol", product: "Rexulti", lab: "Lundbeck Brasil", numStock: 21000 },
+    { substance: "Cabergolina", product: "Caberedux", lab: "EMS", numStock: 1 },
+    { substance: "Dipirona", product: "Maxalgina", lab: "EMS", numStock: 35 },
+    { substance: "Dipirona", product: "Dipirona Monoidratada", lab: "Geolab", numStock: 6 },
+    { substance: "Dipirona", product: "Diprin", lab: "Geolab", numStock: 22 },
+    { substance: "Docetaxel", product: "Dobeven", lab: "Sanofi", numStock: 18 },
   ];
 
   const [query, setQuery] = useState('');

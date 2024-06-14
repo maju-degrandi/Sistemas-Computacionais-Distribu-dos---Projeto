@@ -24,7 +24,12 @@ th {
 	border-bottom: 1px solid black;
 }
 
-td {
+.sell-column{
+    width: 230px;
+    display: flex;
+}
+
+.data-column{
 	text-align: center;
     width: 300px;
 }
@@ -33,3 +38,4 @@ td {
     background-color:dimgrey;
     height: 50px;
 }
+
