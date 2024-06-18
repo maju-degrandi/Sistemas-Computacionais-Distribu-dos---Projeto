@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "database"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^3.0.3"
+flask-migrate = "^4.0.7"
+flask-sqlalchemy = "^3.1.1"
+sqlalchemy = "^2.0.30"
+psycopg2 = "^2.9.9"
+python-dotenv = "^1.0.1"
+invoke = "^2.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

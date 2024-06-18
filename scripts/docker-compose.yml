@@ -1,0 +1,105 @@
+version: "3.9"
+
+services:
+  proxy:
+    build:
+      context: ../packages/proxy
+      dockerfile: ./Dockerfile
+    container_name: distribuidos-proxy
+    ports:
+      - 80:80
+    depends_on:
+      - frontend
+      - backend
+      #- consumer
+    networks:
+      - distribuidos
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    hostname: zookeeper
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 2181:2181
+    networks:
+      - distribuidos
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - distribuidos
+
+  postgres:
+    image: postgres
+    restart: always
+    container_name: distribuidos-postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: distribuidos
+      POSTGRES_PASSWORD: "123456"
+      POSTGRES_DB: distribuidos
+    volumes:
+      - ../volumes/database:/var/lib/postgresql/data
+    networks:
+      - distribuidos
+
+  frontend:
+    build:
+      context: ../packages/frontend
+      dockerfile: ./docker/Dockerfile
+    container_name: distribuidos-frontend
+    ports:
+      - 3000:3000
+    networks:
+      - distribuidos
+
+  backend:
+    build:
+      context: ../packages
+      dockerfile: ./backend/Dockerfile
+    container_name: distribuidos-backend
+    ports:
+      - 3001:3000
+    depends_on:
+      - postgres
+    networks:
+      - distribuidos
+    environment:
+      - SQLALCHEMY_DATABASE_URI=postgresql://distribuidos:123456@postgres:5432/distribuidos
+      - SCRIPT_NAME=/api
+
+  consumer:
+    build:
+      context: ../packages
+      dockerfile: ./consumer/Dockerfile
+    container_name: distribuidos-consumer
+    ports:
+      - 3002:3000
+    depends_on:
+      - backend
+    networks:
+      - distribuidos
+    environment:
+      - SQLALCHEMY_DATABASE_URI=postgresql://distribuidos:123456@postgres:5432/distribuidos
+
+networks:
+  distribuidos:
+    driver: bridge
