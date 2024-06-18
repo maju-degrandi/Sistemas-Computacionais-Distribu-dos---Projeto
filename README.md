@@ -1,16 +1,16 @@
-Trabalho de Sistemas Distribuídos
+# Trabalho de Sistemas Distribuídos
 
-Alunos:
+## Alunos:
 
 - TODO: Preencher nomes
 
-# Instruções de uso
+## Instruções de uso
 
-## Importante
+### Importante
 
 Esse projeto usa a ferramenta Poetry para gerenciar dependências do Python. Para instalar o Poetry, siga as instruções em https://python-poetry.org/docs/#installation.
 
-## Instalação
+### Instalação
 
 Para instalar as dependências do projeto, execute o script `install.sh`:
 
@@ -18,7 +18,7 @@ Para instalar as dependências do projeto, execute o script `install.sh`:
 $ ./scripts/install.sh
 ```
 
-## Inicialização do banco de dados
+### Inicialização do banco de dados
 
 **Importante**: esse passo deve ser realizado apenas uma vez, antes da primeira execução do projeto.
 
@@ -40,7 +40,7 @@ $ cd ../../scripts
 $ docker-compose down postgres
 ```
 
-## Execução
+### Execução
 
 Para executar o projeto, suba o `docker-compose` contido no diretório `scripts` com as flags `-d` e `--build`:
 
@@ -50,6 +50,12 @@ $ docker-compose up -d --build
 ```
 
 ## Desenvolvimento local
+
+Para adicionar dependências ao projeto, navegue até o diretório do pacote que deseja adicionar a dependência e execute o comando:
+
+```bash
+$ poetry add <nome-da-dependencia>
+```
 
 ### Banco de dados
 
