@@ -9,7 +9,15 @@ fi
 
 # Start database container
 echo "Starting database container..."
-docker compose up -d postgres
+
+
+if command -v sudo &> /dev/null
+then
+    sudo docker compose up -d postgres
+else
+    docker compose up -d postgres
+fi
+
 
 # Wait for the database to start
 echo "Waiting for database to start..."
