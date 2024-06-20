@@ -24,9 +24,19 @@ def sell_product(product_id, product):
     if not product:
         return jsonify({"message": "Product not found."}), 404
 
-    # TODO tem que ver como vai mexer no banco pra fazer isso aqui
+    quantity_to_sell = request.json["quantity"]
 
-    return jsonify(product.as_dict())
+    if quantity_to_sell > product.quantity_in_stock:
+        return (
+            jsonify({"message": f"Not enough products in stock."}),
+            400,
+        )
+
+    product.quantity_in_stock -= quantity_to_sell
+
+    updated_product = product.save()
+
+    return jsonify(updated_product.as_dict())
 
 
 @bp.route("/<string:product_id>", methods=["GET"])
