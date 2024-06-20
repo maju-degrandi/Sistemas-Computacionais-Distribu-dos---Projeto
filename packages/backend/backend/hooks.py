@@ -20,8 +20,6 @@ def load_model(Model: Model, extract_id_lambda=None):
 
             instance = Model.find_by(id=model_id)
 
-            if model_id_name in kwargs:
-                del kwargs[model_id_name]
             kwargs[model_name] = instance
             return view(**kwargs)
 
