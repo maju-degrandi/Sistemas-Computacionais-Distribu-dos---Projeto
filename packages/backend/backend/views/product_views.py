@@ -12,7 +12,7 @@ bp = Blueprint("product", __name__, url_prefix="/products")
 def get_products():
     query = request.args.get("substanceName", "")
 
-    products = Product.query.filter(Product.substance_name.like(f"%{query}%")).all()
+    products = Product.query.filter(Product.substance_name.ilike(f"%{query}%")).all()
 
     product_list = [product.as_dict() for product in products]
 
