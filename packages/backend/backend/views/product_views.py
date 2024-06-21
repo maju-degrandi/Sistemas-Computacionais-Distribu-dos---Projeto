@@ -15,7 +15,7 @@ def get_products():
 
     product_list = [product.as_dict() for product in products]
 
-    return jsonify({"products": product_list})
+    return jsonify(product_list)
 
 
 @bp.route("/<string:product_id>/sell", methods=["PATCH"])
