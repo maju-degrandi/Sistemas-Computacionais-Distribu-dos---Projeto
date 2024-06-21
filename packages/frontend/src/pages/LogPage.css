@@ -14,7 +14,7 @@
     color: gainsboro;
     overflow-y: auto;
     max-height: 100px;
-    border-spacing: 10px; 
+    border-spacing: 0 0 0 10px;
 }
 
 .table-container-log table {
@@ -22,12 +22,20 @@
     border-collapse: separate;
 }
 
-th {
-    border-bottom: 1px solid black;
+.title-row-log {
+    background-color: dimgrey;
+    height: 50px;
+    text-align: center;
+    font-size: 1.5vw;
 }
 
-.data-column-log {
-    text-align: left;
+.title-row-log th {
+  padding: 0 8px;
+
+}
+
+.data-row-log {
+    text-align: center;
     width: 70%;
     background-color: #343943;
     padding: 15px;
@@ -37,7 +45,7 @@ th {
     font-family: monospace;
 }
 
-.data-column-log:hover {
+.data-row-log:hover {
     background-color: #282c34;
 }
 
