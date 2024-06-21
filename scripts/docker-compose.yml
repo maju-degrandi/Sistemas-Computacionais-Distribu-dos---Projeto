@@ -36,6 +36,7 @@ services:
     ports:
       - 9092:9092
     expose:
+      - 9091
       - 29091
     environment:
       KAFKA_BROKER_ID: 1
@@ -100,11 +101,15 @@ services:
     ports:
       - 3001:3000
     depends_on:
-      - postgres
+      postgres:
+        condition: service_started
+      init-kafka:
+        condition: service_completed_successfully
     networks:
       - distribuidos
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://distribuidos:123456@postgres:5432/distribuidos
+      - KAFKA_BOOTSTRAP_SERVER_URI=kafka:9091
       - SCRIPT_NAME=/api
 
   consumer:
