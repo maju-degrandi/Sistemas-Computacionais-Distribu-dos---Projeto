@@ -6,7 +6,7 @@ bp = Blueprint("sale-log", __name__, url_prefix="/sale-logs")
 
 @bp.route("/", methods=["GET"])
 def get_sales_logs():
-    logs = SaleLog.query.all()
+    logs = SaleLog.query.order_by(SaleLog.time_of_sale.desc()).all()
 
     logs_list = [log.as_dict() for log in logs]
 

@@ -1,3 +1,4 @@
+from database.models import SaleLog
 from consumer.config import Config
 from kafka import KafkaConsumer
 import json
@@ -10,10 +11,15 @@ consumer = KafkaConsumer(
 )
 
 
-def process_logs():
+def process_sales():
     for message in consumer:
-        print(f"O que eu recebi: {message.value}")
+        sale = message.value
+
+        SaleLog.create(
+            quantity_sold=sale["quantity_sold"],
+            product_sold=sale["product_id"],
+        )
 
 
 if __name__ == "__main__":
-    process_logs()
+    process_sales()
