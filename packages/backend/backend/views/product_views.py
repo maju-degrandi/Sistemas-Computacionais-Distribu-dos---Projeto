@@ -1,5 +1,6 @@
 # type: ignore
 
+from backend.kafka_producer import send_sale_log_message
 from backend.hooks import load_model
 from database.models import Product
 from flask import Blueprint, g, jsonify, request, session
@@ -35,6 +36,8 @@ def sell_product(product_id, product):
     product.quantity_in_stock -= quantity_to_sell
 
     updated_product = product.save()
+
+    send_sale_log_message(product_id, quantity_to_sell)
 
     return jsonify(updated_product.as_dict())
 
