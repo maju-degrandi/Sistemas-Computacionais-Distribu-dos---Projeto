@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   proxy:
@@ -7,13 +7,13 @@ services:
       dockerfile: ./Dockerfile
     container_name: distribuidos-proxy
     ports:
-      - 80:80
+      - 6027:80
     depends_on:
       - frontend
       - backend
-      #- consumer
     networks:
       - distribuidos
+    restart: always
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -26,6 +26,7 @@ services:
       - 2181:2181
     networks:
       - distribuidos
+    restart: unless-stopped
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -47,13 +48,14 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
       - distribuidos
+    restart: unless-stopped
 
   init-kafka:
     image: confluentinc/cp-kafka:latest
     container_name: init-kafka
     depends_on:
       - kafka
-    entrypoint: ['/bin/sh', '-c']
+    entrypoint: ["/bin/sh", "-c"]
     command: |
       "
       # blocks until kafka is reachable
@@ -70,13 +72,13 @@ services:
 
   postgres:
     image: postgres
-    restart: always
+    restart: unless-stopped
     container_name: distribuidos-postgres
     ports:
       - 5432:5432
     environment:
       POSTGRES_USER: distribuidos
-      POSTGRES_PASSWORD: '123456'
+      POSTGRES_PASSWORD: "123456"
       POSTGRES_DB: distribuidos
     volumes:
       - ../volumes/database:/var/lib/postgresql/data
@@ -89,9 +91,12 @@ services:
       dockerfile: ./docker/Dockerfile
     container_name: distribuidos-frontend
     ports:
-      - 6027:3000
+      - 3000:3000
     networks:
       - distribuidos
+    depends_on:
+      - backend
+    restart: always
 
   backend:
     build:
@@ -99,18 +104,21 @@ services:
       dockerfile: ./backend/Dockerfile
     container_name: distribuidos-backend
     ports:
-      - 5027:3000
+      - 3001:3000
     depends_on:
       postgres:
         condition: service_started
       init-kafka:
         condition: service_completed_successfully
+      kafka:
+        condition: service_started
     networks:
       - distribuidos
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://distribuidos:123456@postgres:5432/distribuidos
       - KAFKA_BOOTSTRAP_SERVER_URI=kafka:9091
       - SCRIPT_NAME=/api
+    restart: always
 
   consumer:
     build:
@@ -121,11 +129,13 @@ services:
       - 3002:3000
     depends_on:
       - backend
+      - kafka
     networks:
       - distribuidos
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://distribuidos:123456@postgres:5432/distribuidos
       - KAFKA_BOOTSTRAP_SERVER_URI=kafka:9091
+    restart: always
 
 networks:
   distribuidos:
