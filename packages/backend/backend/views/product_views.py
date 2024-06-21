@@ -10,9 +10,13 @@ bp = Blueprint("product", __name__, url_prefix="/products")
 
 @bp.route("/", methods=["GET"])
 def get_products():
-    query = request.args.get("substanceName", "")
+    query = request.args.get("name", "")
 
-    products = Product.query.filter(Product.substance_name.ilike(f"%{query}%")).all()
+    products = (
+        Product.query.filter(Product.name.ilike(f"%{query}%"))
+        .order_by(Product.name)
+        .all()
+    )
 
     product_list = [product.as_dict() for product in products]
 
