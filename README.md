@@ -3,9 +3,9 @@
 ## Alunos:
 
 - ARTHUR VERGAÇAS DAHER MARTINS - 12542672
-- FÁBIO VERARDINO DE OLIVEIRA   - 12674547 
-- LAURA FERRÉ SCOTELARI         - 12543436 
-- MARIA JÚLIA SOARES DE GRANDI  - 12542501
+- FÁBIO VERARDINO DE OLIVEIRA - 12674547
+- LAURA FERRÉ SCOTELARI - 12543436
+- MARIA JÚLIA SOARES DE GRANDI - 12542501
 
 ## Instruções de uso
 
@@ -51,6 +51,8 @@ Para executar o projeto, suba o `docker-compose` contido no diretório `scripts`
 $ cd scripts
 $ docker-compose up -d --build
 ```
+
+A aplicação é servida através de um proxy reverso Nginx na porta 6027, que redireciona as requisições para o frontend e o backend. O backend é servido nas UTLs `/api`. O frontend é servido na raiz.
 
 ## Desenvolvimento local
 
