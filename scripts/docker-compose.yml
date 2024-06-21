@@ -35,14 +35,35 @@ services:
       - zookeeper
     ports:
       - 9092:9092
-      - 29092:29092
+    expose:
+      - 29091
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9091,PLAINTEXT_HOST://kafka:29091,PLAINTEXT_LOCAL://localhost:9092,PLAINTEXT_HOST_LOCAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,PLAINTEXT_LOCAL:PLAINTEXT,PLAINTEXT_HOST_LOCAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - distribuidos
+
+  init-kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: init-kafka
+    depends_on:
+      - kafka
+    entrypoint: ['/bin/sh', '-c']
+    command: |
+      "
+      # blocks until kafka is reachable
+      kafka-topics --bootstrap-server kafka:29091 --list
+
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server kafka:29091 --create --if-not-exists --topic sale-log --replication-factor 1 --partitions 1
+
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka:29091 --list
+      "
     networks:
       - distribuidos
 
