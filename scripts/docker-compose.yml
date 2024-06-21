@@ -125,6 +125,7 @@ services:
       - distribuidos
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://distribuidos:123456@postgres:5432/distribuidos
+      - KAFKA_BOOTSTRAP_SERVER_URI=kafka:9091
 
 networks:
   distribuidos:
