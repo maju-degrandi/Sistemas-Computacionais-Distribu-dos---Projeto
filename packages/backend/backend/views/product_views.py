@@ -3,7 +3,7 @@
 from backend.kafka_producer import send_sale_log_message
 from backend.hooks import load_model
 from database.models import Product
-from flask import Blueprint, g, jsonify, request, session
+from flask import Blueprint, jsonify, request
 
 bp = Blueprint("product", __name__, url_prefix="/products")
 

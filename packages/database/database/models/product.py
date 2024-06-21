@@ -19,7 +19,7 @@ class Product(BaseModel):
     )
 
     substance = db.relationship("Substance", back_populates="products")
-    laboratory = db.relationship("Laboratory", back_populates="products")
+    laboratory = db.relationship("Laboratory", backref="product")
     sales_logs = db.relationship("SaleLog", back_populates="products")
 
     def as_dict(self):
@@ -27,5 +27,6 @@ class Product(BaseModel):
             "id": self.id,
             "quantity_in_stock": self.quantity_in_stock,
             "substance_name": self.substance_name,
+            "laboratory_name": self.laboratory.name,
             "laboratory_cnpj": self.laboratory_cnpj,
         }
