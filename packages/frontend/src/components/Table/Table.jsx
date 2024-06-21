@@ -9,19 +9,19 @@ export default function Table({data}) {
         <table>
             <tr class="title-row">
                 <td>Substância</td>
-                <td>Produto</td>
                 <td>Laboratório</td>
+                <td>Laboratório CNPJ</td>
                 <td>Qtd. em Estoque</td>
                 <td></td>
             </tr>
             {data.map((val, key) => {
                 return (
                     <tr key={key}>
-                        <td className='data-column'>{val.substance}</td>
-                        <td className='data-column'>{val.product}</td>
-                        <td className='data-column'>{val.lab}</td>
-                        <td className='data-column'>{val.numStock}</td>
-                        <td className='sell-column'><QuantitySelector initialNumSell={0} numStock={val.numStock}/> <SellButton/></td>
+                        <td className='data-column'>{val.substance_name}</td>
+                        <td className='data-column'>{val.laboratory_name}</td>
+                        <td className='data-column'>{val.laboratory_cnpj}</td>
+                        <td className='data-column'>{val.quantity_in_stock}</td>
+                        <td className='sell-column'><SellButton id={val.id} quantity_in_stock={val.quantity_in_stock} initialNumSell={0}/></td>
                     </tr>
                 )
             })}

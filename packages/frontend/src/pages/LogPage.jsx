@@ -1,9 +1,9 @@
-import React from 'react';
+import {React, useState, useEffect} from 'react';
 import './LogPage.css';
 import { useNavigate } from "react-router-dom";
 
 export default function LogPage() {
-    const logList = [
+    /*const logList = [
         { logLine: "03/22 08:51:01 INFO   : Venda efetuada 15 Cloridrato de Metilfenidato | EMS" },
         { logLine: "03/23 09:20:15 INFO   : Venda efetuada 20 Ibuprofeno | Medley" },
         { logLine: "03/24 10:35:42 INFO   : Venda efetuada 5 Paracetamol | Neo Química" },
@@ -14,7 +14,20 @@ export default function LogPage() {
         { logLine: "03/24 10:33:10 INFO   : Venda efetuada 5  Ibuprofeno | Bayer" },
         { logLine: "03/25 11:44:15 INFO   : Venda efetuada 20 Dipirona | Novartis" },
         { logLine: "03/26 12:55:20 INFO   : Venda efetuada 27 Omeprazol | EMS" },
-    ];
+    ];*/
+
+    const [logList, setLogList] = useState([]);
+      
+    useEffect(() => {
+        fetchLog();
+    }, []);
+
+    const fetchLog = async () => {
+        fetch(`http://andromeda.lasdpc.icmc.usp.br:5027/api/sale-logs`)
+        .then(response => response.json())
+        .then(data => setLogList(data))
+        .catch(error => console.error(error));
+    };
 
     const navigate = useNavigate()
 
@@ -34,7 +47,7 @@ export default function LogPage() {
                     {logList.map((val, key) => {
                             return (
                                 <tr key={key}>
-                                    <td className='data-column-log'>{val.logLine}</td>
+                                    <td className='data-column-log'>{val.time_of_sale}{" | Produto: "}{val.product_sold}{" | Quantidade vendida: "}{val.quantity_sold}</td>
                                 </tr>
                             )
                         })}

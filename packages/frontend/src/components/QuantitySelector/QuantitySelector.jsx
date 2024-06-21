@@ -3,8 +3,8 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import './QuantitySelector.css';
 
 
-export default function QuantitySelector({ initialNumSell, numStock }) {
-    const [numSell, setNumSell] = useState(initialNumSell);
+export default function QuantitySelector({numStock, numSell, setNumSell}) {
+    
 
     const handleClickPlus = () => {
         if (numSell < numStock) {
