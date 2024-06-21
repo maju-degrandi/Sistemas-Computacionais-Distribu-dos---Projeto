@@ -89,7 +89,7 @@ services:
       dockerfile: ./docker/Dockerfile
     container_name: distribuidos-frontend
     ports:
-      - 3000:3000
+      - 6027:3000
     networks:
       - distribuidos
 
@@ -99,7 +99,7 @@ services:
       dockerfile: ./backend/Dockerfile
     container_name: distribuidos-backend
     ports:
-      - 3001:3000
+      - 5027:3000
     depends_on:
       postgres:
         condition: service_started

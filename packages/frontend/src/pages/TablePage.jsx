@@ -5,7 +5,7 @@ import './TablePage.css';
 import { useNavigate } from "react-router-dom";
 
 const TablePage = () => {
-    const dataList = [
+    /*const dataList = [
         { substance: "Cloridrato de Metilfenidato", product: "Ritalina", lab: "Eurofarma", numStock: 11},
         { substance: "Amoxilina", product: "Amoxilina", lab: "Medley", numStock: 41 },
         { substance: "Cloridrato de Sertralina", product: "Zoloft", lab: "EMS", numStock: 17 },
@@ -19,7 +19,8 @@ const TablePage = () => {
         { substance: "Dipirona", product: "Diprin", lab: "Geolab", numStock: 22 },
         { substance: "Docetaxel", product: "Dobeven", lab: "Sanofi", numStock: 18 },
       ];
-    
+
+      const navigate = useNavigate()
       const [query, setQuery] = useState('');
       const [filteredData, setFilteredData] = useState(dataList); 
     
@@ -39,9 +40,36 @@ const TablePage = () => {
         if (value === '') {
           setFilteredData(dataList); 
         }
-      };
+      };*/
+      const [query, setQuery] = useState('');
+      const [dataList, setDataList] = useState([]);
+      const [filteredData, setFilteredData] = useState([]);
+      
+      const navigate = useNavigate();
 
-      const navigate = useNavigate()
+      useEffect(() => {
+          fetchProducts();
+      }, []);
+
+      const handleSearch = () => {
+        console.log('Search query:', query);
+        fetchProducts(query);
+      };
+    
+      const handleInputChange = (value) => {
+        setQuery(value);
+        if (value === '') {
+            fetchProducts();
+        }
+      };
+    
+      const fetchProducts = async (query = '') => {
+          console.log('URL:', `http://localhost:5000/products?substanceName=${encodeURIComponent(query)}`);
+          fetch(`http://localhost:5000/products?substanceName=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => setFilteredData(data.products))
+          .catch(error => console.error(error));
+      };
 
       const goToLogPage=()=>{
           navigate("/log");
@@ -59,7 +87,6 @@ const TablePage = () => {
             </div>
     
             <Table data={filteredData}/>
-    
           </header>
         </div>
       );
