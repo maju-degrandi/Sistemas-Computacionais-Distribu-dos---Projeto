@@ -18,12 +18,13 @@ class SaleLog(BaseModel):
         db.DateTime(timezone=True), server_default=func.now(), nullable=False
     )
 
-    products = db.relationship("Product", back_populates="sales_logs")
+    product = db.relationship("Product", back_populates="sale_logs")
 
     def as_dict(self):
         return {
             "id": self.id,
             "quantity_sold": self.quantity_sold,
-            "product_sold": self.product_sold,
+            "product_id": self.product_sold,
+            "product_name": self.product.name,
             "time_of_sale": self.time_of_sale,
         }
