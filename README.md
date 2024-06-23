@@ -54,6 +54,8 @@ $ docker-compose up -d --build
 
 A aplicação é servida através de um proxy reverso Nginx na porta 6027, que redireciona as requisições para o frontend e o backend. O backend é servido nas UTLs `/api`. O frontend é servido na raiz.
 
+Além disso, é possível acessar uma instância do Grafana, para visualização de métricas do sistema, na porta 5027. As credenciais de acesso são usuário `admin` e senha `distribuidos`.
+
 ## Desenvolvimento local
 
 Para adicionar dependências ao projeto, navegue até o diretório do pacote que deseja adicionar a dependência e execute o comando:
