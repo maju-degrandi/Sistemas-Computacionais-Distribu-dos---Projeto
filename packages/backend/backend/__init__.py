@@ -1,9 +1,11 @@
-from database import db
 from flask import Flask
 from flask_cors import CORS
 
 from .config import Config
+from database import db
+from .metrics import register_metrics
 from .hooks import add_headers
+
 from .views import product_views, sale_log_views
 
 
@@ -22,6 +24,7 @@ def create_app():
 
 def register_extensions(app):
     db.init_app(app)
+    register_metrics(app)
 
     return app
 

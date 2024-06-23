@@ -1,5 +1,9 @@
 version: "3.9"
 
+networks:
+  distribuidos:
+    driver: bridge
+
 services:
   proxy:
     build:
@@ -18,7 +22,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     hostname: zookeeper
-    container_name: zookeeper
+    container_name: distribuidos-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -31,7 +35,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:latest
     hostname: kafka
-    container_name: kafka
+    container_name: distribuidos-kafka
     depends_on:
       - zookeeper
     ports:
@@ -52,7 +56,7 @@ services:
 
   init-kafka:
     image: confluentinc/cp-kafka:latest
-    container_name: init-kafka
+    container_name: distribuidos-init-kafka
     depends_on:
       - kafka
     entrypoint: ["/bin/sh", "-c"]
@@ -114,10 +118,14 @@ services:
         condition: service_started
     networks:
       - distribuidos
+    volumes:
+      - ../volumes/prometheus:/tmp/prometheus
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://distribuidos:123456@postgres:5432/distribuidos
       - KAFKA_BOOTSTRAP_SERVER_URI=kafka:9091
       - SCRIPT_NAME=/api
+      - FLASK_ENV=production
+      - PROMETHEUS_MULTIPROC_DIR=/tmp/prometheus
     restart: always
 
   consumer:
@@ -137,6 +145,83 @@ services:
       - KAFKA_BOOTSTRAP_SERVER_URI=kafka:9091
     restart: always
 
-networks:
-  distribuidos:
-    driver: bridge
+  # Observability
+  prometheus:
+    image: prom/prometheus
+    container_name: distribuidos-prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ../monitoring/prometheus:/etc/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    networks:
+      - distribuidos
+    restart: always
+    depends_on:
+      - node-exporter
+      - postgres-exporter
+      - kafka-exporter
+      - backend
+
+  grafana:
+    image: grafana/grafana
+    container_name: distribuidos-grafana
+    user: "0"
+    ports:
+      - 5027:3000
+    networks:
+      - distribuidos
+    restart: always
+    volumes:
+      - ../volumes/grafana:/var/lib/grafana
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ../monitoring/grafana/dashboards:/etc/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=distribuidos
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_HTTP_PORT=3000
+    depends_on:
+      - prometheus
+
+  node-exporter:
+    image: prom/node-exporter
+    container_name: distribuidos-node-exporter
+    ports:
+      - 9100:9100
+    networks:
+      - distribuidos
+    restart: always
+
+  postgres-exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    container_name: distribuidos-postgres-exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://distribuidos:123456@postgres:5432/distribuidos?sslmode=disable"
+    ports:
+      - "9187:9187"
+    networks:
+      - distribuidos
+    restart: always
+    depends_on:
+      - postgres
+
+  kafka-exporter:
+    image: danielqsj/kafka-exporter:latest
+    container_name: distribuidos-kafka-exporter
+    command:
+      [
+        "--kafka.server=kafka:9091",
+        "--zookeeper.server=zookeeper:2181",
+        "--use.consumelag.zookeeper",
+      ]
+    ports:
+      - "9308:9308"
+    networks:
+      - distribuidos
+    restart: always
+    depends_on:
+      kafka:
+        condition: service_started
+      init-kafka:
+        condition: service_completed_successfully
