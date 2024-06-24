@@ -16,12 +16,7 @@ def register_metrics(app):
     metrics = create_metrics()
     metrics_view = create_metrics_view(metrics)
 
-    print("metrics path", metrics.path)
-    print("metrics view", metrics_view.url_prefix)
-
     metrics.init_app(app)
     app.register_blueprint(metrics_view)
-
-    print("app after metrics", app.url_map)
 
     return app

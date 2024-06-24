@@ -21,3 +21,29 @@
     font-size: 2.5vw;
     margin-bottom: 0px;
   }
+
+  .pagination{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .page-button{
+    background-color: forestgreen;
+    padding: 7px 25px;
+    border-radius: 20px;
+    border:none;
+    color: white;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.page-button:hover{
+    background-color: dimgray;
+}
+
+  .page-text{
+    color: white;
+    font-size: 1.5vw;
+    margin: 0 10px;
+  }

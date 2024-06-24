@@ -9,11 +9,12 @@
 .table-container table {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 40px;
 } 
 
 tr{
     transition: background-color 0.5s ease;
-    font-size: 1.5vw;
+    font-size: 1.0vw;
     
 }
 
@@ -30,12 +31,15 @@ th {
     padding-right: 8px;
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 9vh;
 }
 
 .data-column{
 	text-align: center;
-    width: 200px;
+  max-width: 300px;
+  word-wrap: break-word;
+  padding: 10px 0;
 }
 
 .title-row{

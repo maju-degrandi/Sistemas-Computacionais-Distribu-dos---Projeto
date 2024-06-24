@@ -8,6 +8,8 @@ import api from "../services/api";
 const TablePage = () => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
 
   const navigate = useNavigate();
 
@@ -27,10 +29,14 @@ const TablePage = () => {
     }
   };
 
-  const fetchProducts = async (query = "") => {
+  const fetchProducts = async (query = "", page = 1) => {
     api
-      .get("/products", { params: { name: query } })
-      .then((response) => setFilteredData(response.data))
+      .get("/products", { params: { name: query, page } })
+      .then((response) => {
+        setFilteredData(response.data.products);
+        setMaxPage(response.data.pages);
+        setCurrentPage(response.data.page);
+      })
       .catch((error) => console.error(error));
   };
 
@@ -53,6 +59,25 @@ const TablePage = () => {
             onInputChange={handleInputChange}
             onButtonClick={handleSearch}
           />
+        </div>
+        <div class="pagination">
+          <button
+            onClick={() => fetchProducts(query, Math.max(currentPage - 1, 1))}
+            className="page-button"
+          >
+            Anterior
+          </button>
+          <span className="page-text">
+            Página {currentPage} de {maxPage}
+          </span>
+          <button
+            onClick={() =>
+              fetchProducts(query, Math.min(currentPage + 1, maxPage))
+            }
+            className="page-button"
+          >
+            Próxima
+          </button>
         </div>
 
         {filteredData.length === 0 ? (
